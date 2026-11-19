@@ -13,6 +13,8 @@ tags:
 
 # Qwen3.5-9B abliterated, repaired (GGUF, Q4_K_M + imatrix)
 
+**Result: the repaired model scores 65/74 on the dev set and 68/74 on the held-out set (original Qwen3.5-9B at Q3_K_S: 57/74), 87.3% on a 150-problem MATH-500 sample, and refuses 0 of 6 harmful prompts, in a 5.6 GB Q4_K_M that runs on a 4 GB GPU with 8 GB of RAM.**
+
 [huihui-ai/Huihui-Qwen3.5-9B-abliterated](https://huggingface.co/huihui-ai/Huihui-Qwen3.5-9B-abliterated) with every
 tensor that abliteration changed in layers 8-15 copied back from the original
 [Qwen/Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B), then rebuilt from f16 at Q4_K_M with an importance matrix.

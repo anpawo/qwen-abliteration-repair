@@ -1,5 +1,7 @@
 # Repairing an abliterated Qwen3.5-9B by restoring weights
 
+**Result: the repaired model scores 65/74 on the dev set and 68/74 on the held-out set (original Qwen3.5-9B at Q3_K_S: 57/74), 87.3% on a 150-problem MATH-500 sample, and refuses 0 of 6 harmful prompts, in a 5.6 GB Q4_K_M that runs on a 4 GB GPU with 8 GB of RAM.**
+
 An abliterated model (its refusal direction removed from the weights) answers everything, but abliteration also costs
 it reasoning. This project copies part of the original weights back into the abliterated model, so that it regains
 its reasoning while still not refusing, and then rebuilds the result at the highest precision that fits a small GPU.
