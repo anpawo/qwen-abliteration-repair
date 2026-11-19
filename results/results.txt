@@ -1,0 +1,69 @@
+B_26-27_all_train: n=8 correct=2 (25%) hit_cap=6 (75%) mean_tokens=5150 mean_secs=189
+base_t06_p0_train: n=8 correct=1 (12%) hit_cap=7 (88%) mean_tokens=5520 mean_secs=179
+D_3-30_all_train: n=8 correct=1 (12%) hit_cap=7 (88%) mean_tokens=6094 mean_secs=215
+base_train: n=8 correct=2 (25%) hit_cap=6 (75%) mean_tokens=5429 mean_secs=191
+notabl_train: n=8 correct=5 (62%) hit_cap=3 (38%) mean_tokens=3770 mean_secs=131
+H_16-31_train: n=8 correct=2 (25%) hit_cap=6 (75%) mean_tokens=5216 mean_secs=184
+H_0-15_train: n=8 correct=4 (50%) hit_cap=4 (50%) mean_tokens=4642 mean_secs=165
+notabl_refuse: refused 6/6
+abl_refuse: refused 0/6
+H_16-31_refuse: refused 0/6
+H_0-15_refuse: refused 2/6
+H_0-7_train: n=8 correct=2 (25%) hit_cap=6 (75%) mean_tokens=5684 mean_secs=202
+H_8-15_train: n=8 correct=6 (75%) hit_cap=2 (25%) mean_tokens=4026 mean_secs=138
+H_0-7_refuse: refused 0/6
+H_8-15_refuse: refused 1/6
+H_8-11_train: n=8 correct=3 (38%) hit_cap=5 (62%) mean_tokens=4658 mean_secs=161
+H_12-15_train: n=8 correct=5 (62%) hit_cap=3 (38%) mean_tokens=4372 mean_secs=150
+H_8-11_refuse: refused 0/6
+H_12-15_refuse: refused 1/6
+bat_base TOTAL                     19/74
+bat_base capped                    55/74
+bat_H_8-15 TOTAL                     39/74
+bat_H_8-15 capped                    35/74
+bat_stock TOTAL                     33/74
+bat_stock capped                    39/74
+gsm40_base: n=30 correct=5 (17%) hit_cap=25 (83%) mean_tokens=5739 mean_secs=206
+gsm40_H_8-15: n=30 correct=23 (77%) hit_cap=7 (23%) mean_tokens=3039 mean_secs=107
+gsm40_stock: n=30 correct=23 (77%) hit_cap=7 (23%) mean_tokens=3317 mean_secs=256
+bat_base_fr1 TOTAL                       1/1
+bat_base_fr1 capped                      0/1
+bat_H_8-15_nt TOTAL                     59/74
+bat_H_8-15_nt capped                     8/74
+bat_stock_nt TOTAL                     57/74
+bat_stock_nt capped                     8/74
+bat_M_8-15_nt TOTAL                     59/74
+bat_M_8-15_nt capped                     8/74
+bat_H_12-15_nt TOTAL                     58/74
+bat_H_12-15_nt capped                    10/74
+bat_H_0-15_nt TOTAL                     57/74
+bat_H_0-15_nt capped                     9/74
+07/11 19:15 note: bat_M_8-15_nt, bat_H_12-15_nt, bat_H_0-15_nt, bat_H_8-15_S16-19_nt above are invalid (two servers on 8080, M_8-15.gguf missing); reruns end in _nt2
+bat_M_8-15_nt2 TOTAL                     58/74
+bat_M_8-15_nt2 capped                     9/74
+bat_H_8-15_S16-19_nt2 TOTAL                     56/74
+bat_H_8-15_S16-19_nt2 capped                     7/74
+bat_H_12-15_nt2 TOTAL                     58/74
+bat_H_12-15_nt2 capped                    10/74
+bat_H_0-15_nt2 TOTAL                     57/74
+bat_H_0-15_nt2 capped                     8/74
+H_8-15_Q4_refuse: refused 0/6
+M_8-15_refuse: refused 0/6
+H_8-15_S16-19_refuse: refused 5/6
+nt6 imatrix exit 0
+nt6: Q6 battery stopped at 19/74 (out of RAM), Q5 not run
+bat_H_8-15_Q4im_nt TOTAL                     65/74
+bat_H_8-15_Q4im_nt capped                     2/74
+bat_H_8-15_Q4_nt TOTAL                     63/74
+bat_H_8-15_Q4_nt capped                     4/74
+H_8-15_Q4im_refuse: refused 0/6
+nt7: done
+held_H_8-15_Q4im_nt TOTAL                     68/74
+held_H_8-15_Q4im_nt capped                     3/74
+held_H_8-15_nt TOTAL                     52/74
+held_H_8-15_nt capped                     8/74
+nt8: done
+bat_H_8-15_Q4im6_nt TOTAL                     65/74
+bat_H_8-15_Q4im6_nt capped                     4/74
+H_8-15_Q4im6_refuse: refused 0/6
+nt9: done

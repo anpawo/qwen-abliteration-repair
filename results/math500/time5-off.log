@@ -1,0 +1,6 @@
+model=qwen3.5-9b-abl think=off planned=150 done=0 now=5
+test/intermediate_algebra/1462.json correct=True s=573.3 tok=4530 stop
+test/number_theory/838.json correct=True s=198.0 tok=1581 stop
+test/algebra/1031.json correct=True s=69.0 tok=556 stop
+test/counting_and_probability/190.json correct=True s=50.7 tok=416 stop
+test/algebra/907.json correct=True s=57.4 tok=477 stop

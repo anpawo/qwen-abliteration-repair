@@ -1,0 +1,163 @@
+model=qwen3.5-9b-abl think=off planned=150 done=5 now=145
+test/algebra/1098.json correct=True s=27.6 tok=227 stop
+test/prealgebra/1686.json correct=True s=70.3 tok=578 stop
+test/geometry/347.json correct=True s=61.5 tok=506 stop
+test/precalculus/920.json correct=True s=189.5 tok=1552 stop
+test/counting_and_probability/389.json correct=True s=77.0 tok=587 stop
+test/intermediate_algebra/158.json correct=True s=184.7 tok=1342 stop
+test/intermediate_algebra/1806.json correct=True s=622.1 tok=3539 stop
+test/algebra/1339.json correct=True s=89.3 tok=614 stop
+test/counting_and_probability/803.json correct=True s=105.0 tok=817 stop
+test/prealgebra/1251.json correct=True s=93.4 tok=770 stop
+test/algebra/1082.json correct=True s=149.3 tok=1072 stop
+test/precalculus/881.json correct=True s=151.9 tok=1247 stop
+test/intermediate_algebra/1102.json correct=True s=203.0 tok=1662 stop
+test/intermediate_algebra/834.json correct=True s=142.8 tok=1109 stop
+test/counting_and_probability/23957.json correct=True s=68.9 tok=533 stop
+test/algebra/694.json correct=True s=88.9 tok=673 stop
+test/number_theory/516.json correct=False s=73.7 tok=580 stop
+test/precalculus/43.json correct=True s=43.7 tok=355 stop
+test/intermediate_algebra/1279.json correct=False s=926.3 tok=7000 length
+test/algebra/170.json correct=True s=81.9 tok=678 stop
+test/algebra/1265.json correct=True s=39.5 tok=331 stop
+test/algebra/276.json correct=True s=114.6 tok=951 stop
+test/intermediate_algebra/1797.json correct=True s=905.4 tok=7000 length
+test/algebra/661.json correct=False s=904.7 tok=7000 length
+test/number_theory/72.json correct=True s=102.6 tok=846 stop
+test/number_theory/533.json correct=True s=94.5 tok=799 stop
+test/intermediate_algebra/1405.json correct=True s=132.2 tok=1102 stop
+test/algebra/2391.json correct=True s=73.0 tok=616 stop
+test/geometry/711.json correct=True s=891.3 tok=6885 stop
+test/algebra/824.json correct=True s=95.5 tok=780 stop
+test/counting_and_probability/1114.json correct=True s=125.2 tok=1030 stop
+test/algebra/2570.json correct=True s=90.4 tok=757 stop
+test/number_theory/1055.json correct=True s=443.9 tok=3451 stop
+test/algebra/2264.json correct=True s=84.8 tok=692 stop
+test/geometry/967.json correct=True s=44.8 tok=369 stop
+test/algebra/2043.json correct=True s=88.4 tok=746 stop
+test/number_theory/686.json correct=True s=71.2 tok=602 stop
+test/geometry/802.json correct=True s=87.4 tok=738 stop
+test/algebra/1143.json correct=True s=128.9 tok=1086 stop
+test/intermediate_algebra/960.json correct=True s=786.6 tok=6135 stop
+test/intermediate_algebra/1217.json correct=True s=216.3 tok=1152 stop
+test/algebra/1275.json correct=True s=688.0 tok=886 stop
+test/geometry/547.json correct=True s=723.0 tok=2688 stop
+test/algebra/1255.json correct=True s=103.3 tok=333 stop
+test/intermediate_algebra/1714.json correct=True s=65.4 tok=364 stop
+test/intermediate_algebra/117.json correct=False s=954.3 tok=7000 length
+test/intermediate_algebra/362.json correct=True s=825.6 tok=6459 stop
+test/algebra/1184.json correct=True s=473.5 tok=3287 stop
+test/counting_and_probability/199.json correct=True s=651.8 tok=1279 stop
+test/counting_and_probability/71.json correct=True s=706.0 tok=1059 stop
+test/algebra/668.json correct=True s=625.1 tok=388 stop
+test/prealgebra/1742.json correct=True s=128.7 tok=511 stop
+test/prealgebra/1807.json attempt 0: curl 28: curl: (28) Operation timed out after 5400006 milliseconds with 0 bytes received
+
+test/prealgebra/1807.json correct=True s=84.7 tok=514 stop
+test/prealgebra/1302.json correct=True s=44.9 tok=383 stop
+test/intermediate_algebra/2146.json attempt 0: curl 52: curl: (52) Empty reply from server
+
+
+test/intermediate_algebra/2146.json correct=True s=750.1 tok=5665 stop
+test/number_theory/1287.json correct=True s=77.9 tok=643 stop
+test/precalculus/927.json correct=True s=131.8 tok=1111 stop
+test/algebra/305.json correct=True s=83.1 tok=704 stop
+test/geometry/106.json correct=True s=59.6 tok=505 stop
+test/prealgebra/2019.json correct=True s=39.2 tok=336 stop
+test/intermediate_algebra/1510.json correct=False s=896.3 tok=7000 length
+test/algebra/251.json correct=True s=42.7 tok=360 stop
+test/intermediate_algebra/2015.json correct=False s=897.5 tok=7000 length
+test/prealgebra/1203.json correct=True s=50.6 tok=429 stop
+test/prealgebra/1238.json correct=True s=74.6 tok=637 stop
+test/geometry/947.json correct=True s=110.4 tok=932 stop
+test/precalculus/807.json correct=True s=47.9 tok=405 stop
+test/prealgebra/1423.json correct=True s=39.1 tok=331 stop
+test/algebra/2064.json correct=True s=91.3 tok=778 stop
+test/number_theory/1002.json correct=True s=158.0 tok=1336 stop
+test/algebra/297.json correct=True s=389.4 tok=3222 stop
+test/algebra/972.json correct=True s=97.5 tok=828 stop
+test/intermediate_algebra/1365.json correct=True s=132.3 tok=1120 stop
+test/prealgebra/1003.json correct=False s=903.6 tok=7000 length
+test/precalculus/96.json correct=True s=83.2 tok=699 stop
+test/counting_and_probability/134.json correct=True s=60.3 tok=508 stop
+test/prealgebra/105.json correct=False s=76.7 tok=651 stop
+test/algebra/634.json correct=True s=108.1 tok=919 stop
+test/algebra/2593.json correct=True s=58.4 tok=499 stop
+test/algebra/1332.json correct=True s=58.2 tok=490 stop
+test/prealgebra/1227.json correct=True s=52.7 tok=444 stop
+test/geometry/456.json correct=True s=57.5 tok=489 stop
+test/prealgebra/1114.json correct=False s=69.8 tok=592 stop
+test/number_theory/691.json correct=True s=84.1 tok=715 stop
+test/prealgebra/2057.json correct=True s=60.2 tok=509 stop
+test/precalculus/285.json correct=True s=206.8 tok=1744 stop
+test/geometry/627.json correct=True s=152.9 tok=1295 stop
+test/algebra/2517.json correct=True s=159.0 tok=1344 stop
+test/precalculus/580.json correct=True s=89.4 tok=762 stop
+test/algebra/1934.json correct=True s=154.1 tok=1306 stop
+test/algebra/187.json correct=True s=46.0 tok=391 stop
+test/geometry/880.json correct=False s=901.6 tok=7000 stop
+test/prealgebra/996.json correct=True s=50.7 tok=429 stop
+test/number_theory/931.json correct=True s=130.6 tok=1106 stop
+test/algebra/224.json correct=True s=82.0 tok=698 stop
+test/intermediate_algebra/279.json correct=True s=147.4 tok=1247 stop
+test/intermediate_algebra/199.json correct=True s=104.6 tok=890 stop
+test/number_theory/239.json correct=True s=86.4 tok=728 stop
+test/algebra/1282.json correct=True s=180.8 tok=1529 stop
+test/number_theory/1000.json correct=True s=141.3 tok=1191 stop
+test/precalculus/703.json correct=False s=217.8 tok=1836 stop
+test/prealgebra/1991.json correct=True s=66.5 tok=567 stop
+test/counting_and_probability/339.json correct=True s=64.0 tok=546 stop
+test/intermediate_algebra/966.json correct=True s=379.2 tok=3145 stop
+test/precalculus/819.json correct=True s=78.9 tok=671 stop
+test/algebra/2470.json correct=True s=48.0 tok=412 stop
+test/algebra/2257.json correct=False s=83.0 tok=710 stop
+test/intermediate_algebra/1508.json correct=True s=169.4 tok=1436 stop
+test/prealgebra/1655.json correct=True s=99.5 tok=846 stop
+test/number_theory/488.json correct=True s=108.3 tok=918 stop
+test/geometry/283.json correct=True s=788.5 tok=6179 stop
+test/algebra/988.json correct=True s=49.3 tok=421 stop
+test/prealgebra/1646.json correct=False s=97.6 tok=817 stop
+test/intermediate_algebra/662.json correct=False s=897.2 tok=7000 length
+test/precalculus/34.json correct=True s=99.2 tok=842 stop
+test/intermediate_algebra/134.json correct=True s=63.1 tok=538 stop
+test/algebra/2743.json correct=True s=51.0 tok=429 stop
+test/algebra/2592.json correct=True s=36.0 tok=309 stop
+test/algebra/1343.json correct=True s=63.8 tok=545 stop
+test/geometry/254.json correct=True s=64.1 tok=544 stop
+test/number_theory/627.json attempt 0: curl 28: curl: (28) Operation timed out after 5783361 milliseconds with 0 bytes received
+
+test/number_theory/627.json correct=True s=58.8 tok=355 stop
+test/geometry/178.json correct=True s=53.4 tok=458 stop
+test/algebra/1547.json correct=True s=83.1 tok=713 stop
+test/algebra/2046.json correct=True s=57.7 tok=495 stop
+test/intermediate_algebra/623.json correct=True s=51.9 tok=445 stop
+test/intermediate_algebra/1000.json correct=True s=125.2 tok=1067 stop
+--- restarted 19/11 13:15 with STALL=300 streaming
+model=qwen3.5-9b-abl think=off planned=150 done=131 now=19
+test/precalculus/398.json correct=False s=309.5 tok=2589 stop
+test/intermediate_algebra/860.json correct=True s=97.5 tok=831 stop
+test/prealgebra/631.json correct=True s=533.7 tok=4324 stop
+--- restarted 19/11 13:30 with a Haiku judge every 300 s
+model=qwen3.5-9b-abl think=off planned=150 done=134 now=16
+  judge at 300s, 8581 chars: OK
+  judge at 600s, 15348 chars: STUCK
+test/counting_and_probability/238.json correct=False s=606.9 tok=4296 stuck
+test/prealgebra/2086.json correct=True s=92.3 tok=787 stop
+  judge at 300s, 9484 chars: STUCK
+test/geometry/817.json correct=False s=303.8 tok=2300 stuck
+test/number_theory/466.json correct=True s=75.3 tok=643 stop
+test/number_theory/612.json correct=True s=64.9 tok=549 stop
+test/geometry/226.json correct=True s=79.6 tok=671 stop
+  judge at 300s, 6069 chars: OK
+test/intermediate_algebra/128.json correct=True s=314.0 tok=2623 stop
+  judge at 300s, 4928 chars: OK
+  judge at 600s, 9589 chars: OK
+test/intermediate_algebra/345.json correct=False s=897.8 tok=7000 length
+test/geometry/846.json correct=True s=237.0 tok=1985 stop
+test/prealgebra/1044.json correct=False s=78.9 tok=647 stop
+test/counting_and_probability/765.json correct=True s=97.8 tok=827 stop
+test/intermediate_algebra/754.json correct=True s=161.0 tok=1359 stop
+test/number_theory/156.json correct=True s=52.5 tok=448 stop
+test/intermediate_algebra/986.json correct=True s=113.9 tok=967 stop
+test/geometry/843.json correct=True s=65.6 tok=553 stop
+test/number_theory/368.json correct=True s=65.8 tok=561 stop
