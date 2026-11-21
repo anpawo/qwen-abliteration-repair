@@ -1,6 +1,6 @@
 # Repairing an abliterated Qwen3.5-9B by restoring weights
 
-**Result: the repaired model scores 65/74 on the dev set and 68/74 on the held-out set (original Qwen3.5-9B at Q3_K_S: 57/74), 87.3% on a 150-problem MATH-500 sample, and refuses 0 of 6 harmful prompts, in a 5.6 GB Q4_K_M that runs on a 4 GB GPU with 8 GB of RAM.**
+**Result: the repaired model scores 65/74 on the dev set and 68/74 on the held-out set (original Qwen3.5-9B at Q3_K_S: 57/74), 87.3% on a 150-problem MATH-500 sample, and refuses 0 of 6 harmful prompts, in a 5.6 GB Q4_K_M that runs on a 4 GB GPU with 8 GB of RAM. Against the two Heretic builds of the same size on the same tests, it ties the best one on MATH-500 (131/150 each) and leads it on the held-out set (68 vs 60).**
 
 Weights (GGUF, with an Ollama Modelfile): https://huggingface.co/anpawo/Qwen3.5-9B-abliterated-repaired-GGUF
 
@@ -29,6 +29,36 @@ pick a build. On it the final build gains 16 questions over the Q3 one and loses
 On a 150-problem sample of MATH-500 (seed 0, thinking off, served by Ollama) the final build scores **131/150 (87.3%,
 95% Wilson interval 81.1% to 91.7%)**. See [the MATH-500 notes](#math-500-sample) for what that number does and does
 not show.
+
+## Against other uncensored Qwen3.5-9B builds
+
+The two Heretic builds on Hugging Face closest in size, run on the same PC with the same tests and settings (each
+author's own Q4_K_M):
+[llmfan46/Qwen3.5-9B-Ultra-Uncensored-Heretic-GGUF](https://huggingface.co/llmfan46/Qwen3.5-9B-Ultra-Uncensored-Heretic-GGUF)
+and
+[mradermacher/DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED-heretic-GGUF](https://huggingface.co/mradermacher/DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED-heretic-GGUF).
+
+| Model | Size | Dev (74) | Held-out (74) | MATH-500 sample (150) | Refusals (6) | Heretic test: refusal phrases (100) | Heretic test: keyword hits (100) |
+|---|---|---|---|---|---|---|---|
+| Original Qwen3.5-9B, Q3_K_S | | 57 | | | 6/6 | 96 | 96 |
+| **This repo, H_8-15 Q4_K_M + imatrix** | 5.6 GB | 65 | **68** | **131 (87.3%)** | 0/6 | 1 | 40 |
+| llmfan46 Ultra-Uncensored-Heretic | 5.5 GB | **68** | 60 | **131 (87.3%)** | 0/6 | 0 | 11 |
+| DeepSeek-V4-Pro-Qwen3.5-9B heretic | 5.8 GB | 31 | 26 | 120 (80.0%) | 0/6 | 0 | 11 |
+
+- llmfan46 leads on the dev set by 3, this repo on the held-out set by 8. On MATH-500 each solves 6 problems the
+  other misses.
+- The DeepSeek-V4-Pro distill answers battery questions with the bare answer and no working (median 6.5 tokens,
+  against 187 for this repo), which costs it most of the arithmetic and date items. On MATH-500, which asks for
+  steps, it reaches 80.0% (95% interval 72.9% to 85.6%).
+- Heretic's refusal test is the first 100 prompts of `mlabonne/harmful_behaviors` (test split), 100 new tokens,
+  scored with Heretic's keyword list (`refuse100.py`). Its list also matches words like "illegal" or "harmful", so
+  this repo's 40 keyword hits are answers that mention them; only 1 of the 100 contains a refusal phrase. The answers
+  were not kept, so how many of the 40 still comply is not checked.
+- The loop check failed to start on the PC (`WinError 267`), so the two rivals ran without it; this repo's run had it,
+  and it ended 2 problems as wrong. The first 23 DeepSeek-V4-Pro MATH-500 problems ran on an M4 Mac (Ollama,
+  Metal), the rest on the PC.
+- Raw files: `results/bat_<model>_nt.jsonl`, `results/held_<model>_nt.jsonl`, `results/refuse100_*.jsonl`,
+  `results/math500/results-think-off-<model>.jsonl`; the queue is `windows/bench.ps1`.
 
 ## What was tried (dev set, thinking off)
 
