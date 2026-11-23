@@ -108,7 +108,7 @@ def ok(t, c):
 def run(t):
     t0 = time.time()
     req = urllib.request.Request(f"http://127.0.0.1:{os.environ['LLAMA_PORT']}/v1/chat/completions", json.dumps({
-        "messages": [{"role": "user", "content": t["prompt"]}], "max_tokens": MAX, "seed": 0, "top_k": 20, "top_p": 0.95,
+        "messages": [{"role": "user", "content": t["prompt"]}], "max_tokens": MAX, "seed": int(os.environ.get("SEED", 0)), "top_k": 20, "top_p": 0.95,
         "temperature": float(os.environ.get("SAMPLE_TEMP", 1.0)),
         "presence_penalty": float(os.environ.get("SAMPLE_PRESENCE", 1.5)),
         "chat_template_kwargs": {"enable_thinking": os.environ.get("THINK", "1") == "1"}}).encode(),
@@ -181,6 +181,6 @@ else:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
         print(f"{row['id']}: {'ok' if row['ok'] else 'FAIL'} {row['done_reason']} {row['tokens']} tok {row['secs']} s", flush=True)
 
-    with cf.ThreadPoolExecutor(2) as ex:
+    with cf.ThreadPoolExecutor(int(os.environ.get("CONC", 2))) as ex:
         list(ex.map(one, [t for t in tests if t["id"] not in done]))
     report([out])

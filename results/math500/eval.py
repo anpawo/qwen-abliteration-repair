@@ -3,9 +3,10 @@
 usage: OLLAMA_URL=http://host:11434 python3 -I -u eval.py DATA.jsonl OUT.jsonl --model NAME --think off|on [--sample 150] [--limit 5]
        python3 -I eval.py --test
 """
-import argparse, json, math, os, random, re, subprocess, sys, time, urllib.request
+import argparse, concurrent.futures, json, math, os, random, re, subprocess, sys, threading, time, urllib.request
 
 STALL = 300
+LOCK = threading.Lock()
 CHECK = 300  # every CHECK s of generation, a judge reads the partial work; STUCK ends the problem as wrong
 JUDGE = """A model is solving the math problem below and has not finished. Its partial work follows.
 Answer STUCK only if it is going in circles: redoing the same derivation, flipping between the same answers, or repeating a contradiction without a new idea. Answer OK if it is still making progress, even slowly or while fixing its own mistakes.
@@ -143,7 +144,24 @@ def test():
     print("ok")
 
 
+def ask_openai(model, problem, think):
+    """An OpenAI-compatible server (vLLM): one blocking request, no loop check (the cap ends loops)."""
+    s = SAMPLING[think]
+    body = {"model": model, "messages": [{"role": "user", "content": PROMPT.format(problem=problem)}],
+            "max_tokens": s["num_predict"], "seed": 0, **{k: s[k] for k in ("temperature", "top_p", "top_k", "presence_penalty")},
+            "chat_template_kwargs": {"enable_thinking": think == "on"}}
+    req = urllib.request.Request(os.environ["OPENAI_URL"].rstrip("/") + "/v1/chat/completions", json.dumps(body).encode(),
+                                 {"Content-Type": "application/json"})
+    r = json.load(urllib.request.urlopen(req, timeout=7200))
+    ch = r["choices"][0]
+    return {"model": model, "message": {"content": ch["message"].get("content") or "", "thinking": ch["message"].get("reasoning_content") or ""},
+            "eval_count": r["usage"]["completion_tokens"], "prompt_eval_count": r["usage"]["prompt_tokens"],
+            "done_reason": ch["finish_reason"]}
+
+
 def ask(model, problem, think):
+    if os.environ.get("OPENAI_URL"):
+        return ask_openai(model, problem, think)
     url = os.environ.get("OLLAMA_URL", "http://127.0.0.1:11434").rstrip("/") + "/api/chat"
     body = {"model": model, "messages": [{"role": "user", "content": PROMPT.format(problem=problem)}], "stream": True,
             "think": think == "on", "keep_alive": "30m", "options": {**SAMPLING[think], "seed": 0}}
@@ -231,29 +249,32 @@ def main():
     if a.limit:
         todo = todo[:a.limit]
     print(f"model={model} think={a.think} planned={len(order)} done={len(done)} now={len(todo)}", flush=True)
-    for i in todo:
-        r = rows[i]
-        for attempt in range(4):
-            try:
-                t0 = time.time()
-                d = ask(model, r["problem"], a.think)
-                break
-            except Exception as e:
-                print(f"{r['unique_id']} attempt {attempt}: {e}", flush=True)
-                if attempt == 3:
-                    sys.exit(2)
-                time.sleep(150)
-        secs = time.time() - t0
-        msg = d.get("message", {})
-        text = msg.get("content", "")
-        pred = last_boxed(text)
-        rec = {"idx": i, "unique_id": r["unique_id"], "level": r["level"], "subject": r["subject"], "gold": r["answer"],
-               "pred": pred, "correct": equal(pred, r["answer"]), "seconds": round(secs, 1), "model": d.get("model"),
-               "think": a.think, "eval_count": d.get("eval_count"), "prompt_eval_count": d.get("prompt_eval_count"),
-               "done_reason": d.get("done_reason"), "thinking_chars": len(msg.get("thinking") or ""), "response": text}
-        with open(a.out, "a") as f:
-            f.write(json.dumps(rec) + "\n")
-        print(f"{r['unique_id']} correct={rec['correct']} s={rec['seconds']} tok={rec['eval_count']} {rec['done_reason']}", flush=True)
+    with concurrent.futures.ThreadPoolExecutor(int(os.environ.get("CONC", 1))) as ex:
+        list(ex.map(lambda i: one(a, model, rows[i], i), todo))
+
+
+def one(a, model, r, i):
+    for attempt in range(4):
+        try:
+            t0 = time.time()
+            d = ask(model, r["problem"], a.think)
+            break
+        except Exception as e:
+            print(f"{r['unique_id']} attempt {attempt}: {e}", flush=True)
+            if attempt == 3:
+                raise
+            time.sleep(150)
+    secs = time.time() - t0
+    msg = d.get("message", {})
+    text = msg.get("content", "")
+    pred = last_boxed(text)
+    rec = {"idx": i, "unique_id": r["unique_id"], "level": r["level"], "subject": r["subject"], "gold": r["answer"],
+           "pred": pred, "correct": equal(pred, r["answer"]), "seconds": round(secs, 1), "model": d.get("model"),
+           "think": a.think, "eval_count": d.get("eval_count"), "prompt_eval_count": d.get("prompt_eval_count"),
+           "done_reason": d.get("done_reason"), "thinking_chars": len(msg.get("thinking") or ""), "response": text}
+    with LOCK, open(a.out, "a") as f:
+        f.write(json.dumps(rec) + "\n")
+    print(f"{r['unique_id']} correct={rec['correct']} s={rec['seconds']} tok={rec['eval_count']} {rec['done_reason']}", flush=True)
 
 
 if __name__ == "__main__":

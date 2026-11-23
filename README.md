@@ -30,6 +30,10 @@ On a 150-problem sample of MATH-500 (seed 0, thinking off, served by Ollama) the
 95% Wilson interval 81.1% to 91.7%)**. See [the MATH-500 notes](#math-500-sample) for what that number does and does
 not show.
 
+At full precision on an A100 (BF16, all 500 MATH-500 problems), the same repair takes MATH-500 from 80.2% for the
+abliterated model back to 92.6%, against 93.4% for the original: see
+[Full precision on A100s](#full-precision-on-a100s-bf16).
+
 ## Against other uncensored Qwen3.5-9B builds
 
 The two Heretic builds on Hugging Face closest in size, run on the same PC with the same tests and settings (each
@@ -59,6 +63,78 @@ and
   Metal), the rest on the PC.
 - Raw files: `results/bat_<model>_nt.jsonl`, `results/held_<model>_nt.jsonl`, `results/refuse100_*.jsonl`,
   `results/math500/results-think-off-<model>.jsonl`; the queue is `windows/bench.ps1`.
+
+## Full precision on A100s (BF16)
+
+The runs the PC could not do, on one GPU node (4 A100 40 GB): the Hugging Face
+safetensors at BF16, served by vLLM 0.34, one model per GPU. H_8-15 here is `restore.py`, the BF16 version of `mix.py`:
+the abliterated model with the 16 tensors abliteration changed in layers 8-15 copied back from the original, no
+quantization.
+
+| Model (BF16) | Dev (74), seeds 0 / 1 / 2 | Held-out (74), seeds 0 / 1 / 2 | MATH-500, all 500 | Refusals (6) | Heretic test: refusal phrases (100) | Heretic test: keyword hits (100) |
+|---|---|---|---|---|---|---|
+| Original Qwen3.5-9B | 67 / 67 / 65 (66.3) | 65 / 66 / 62 (64.3) | 467 (93.4%, 90.9% to 95.3%) | 6/6 | 99 | 99 |
+| Abliterated (huihui-ai) | 62 / 60 / 62 (61.3) | 57 / 59 / 58 (58.0) | 401 (80.2%, 76.5% to 83.5%) | 0/6 | 0 | 4 |
+| **H_8-15** | 67 / 68 / 68 (67.7) | 65 / 63 / 67 (65.0) | 463 (92.6%, 90.0% to 94.6%) | 0/6 | 4 | 49 |
+
+- At full precision the repair closes the whole gap: abliteration costs about 5 dev and 6 held-out questions and 13
+  points of MATH-500, and H_8-15 is back within noise of the original on all three while answering all 6 prompts.
+- Most of the abliterated model's MATH-500 loss is answers that never end: 88 of 500 hit the 7000-token cap and 71 have
+  no `\boxed{}`, against 22 and 16 for the original and 27 and 20 for H_8-15.
+- On the PC's 150-problem sample the BF16 runs score 136 (original), 127 (abliterated) and 137 (H_8-15), against 131
+  for the Q4_K_M build. The PC's "original at Q3_K_S: 57" on the dev set was quantization: the BF16 original scores 66.3.
+- The price: BF16 H_8-15 starts 4 of Heretic's 100 answers with a refusal phrase (the Q4_K_M build 1), the abliterated
+  model none.
+- Noise: the same model with the same seed, run twice, gives different answers on 17 to 20 of the 74 items (vLLM
+  batches requests, and batching changes floating-point sums); R_12-15 scored 68, then 63, on seed 0. Gaps under about
+  4 questions are noise, hence three seeds.
+
+### Wider restoration search
+
+16 candidates built with `restore.py`, each scored on the dev set (3 seeds) and both refusal tests; the held-out set and
+MATH-500 only for the two best on dev.
+
+| Restored | Dev mean (3 seeds) | Refusals (6) | Heretic: phrases | Heretic: keyword hits |
+|---|---|---|---|---|
+| 0-7 | 60.3 | 0/6 | 0 | 7 |
+| 4-11 | 64.0 | 0/6 | 0 | 16 |
+| 8-11 | 64.3 | 0/6 | 0 | 18 |
+| 12-15 | 67.7 | 0/6 | 2 | 24 |
+| 10-15 | 68.0 | 0/6 | 2 | 47 |
+| 4-15 | 65.7 | 0/6 | 1 | 47 |
+| 0-15 | 66.0 | 0/6 | 2 | 45 |
+| 8-15, `mlp.down_proj` only | 64.3 | 0/6 | 0 | 17 |
+| 8-15, `out_proj`/`o_proj` only | 66.0 | 0/6 | 2 | 23 |
+| 6-17 | 67.0 | 3/6 | 65 | 92 |
+| 8-19 | 66.0 | 6/6 | 99 | 99 |
+| 8-23 | 65.7 | 6/6 | 99 | 99 |
+| 12-19 | 63.3 | 5/6 | 97 | 99 |
+| 16-23 | 61.7 | 0/6 | 26 | 39 |
+| 20-27 | 59.7 | 0/6 | 0 | 7 |
+| 24-31 | 60.0 | 0/6 | 0 | 7 |
+
+- No range beats 8-15 beyond noise. The two best on dev, 10-15 and 12-15, did not hold on the held-out set (62.7 and
+  63.3 against 65.0) nor on MATH-500 (92.2% and 91.2% against 92.6%), so H_8-15 stays.
+- Restoring layers 16-19 brings the refusals back: 6/6 for 8-19 and 8-23, 5/6 for 12-19, 3/6 for 6-17.
+- Ranges that leave out 8-15 recover little: 0-7, 20-27 and 24-31 stay at the abliterated model's level (61.3).
+- Restoring only `ffn_down`, or only the attention and DeltaNet outputs, of 8-15 recovers part of the gain each.
+
+### How these ran
+
+- `slurm/evals.sbatch`: one vLLM server per model (`--max-model-len 16384`), then for each model the dev and held-out
+  sets for seeds 0, 1, 2 (`battery.py`, `SEED`), `refuse.py`, `refuse100.py` and the full MATH-500
+  (`results/math500/eval.py` with `OPENAI_URL`, 64 problems at a time). `ONLY` picks other models.
+- `slurm/search.sbatch`: four workers, one per GPU, each building a candidate, serving it and scoring it.
+- Same prompts, sampling and scorers as on the PC: thinking off, the battery at temperature 1.0, MATH-500 with the
+  model-card thinking-off sampling and a 7000-token cap. MATH-500 here has no loop check (the Claude judge cannot run on
+  a compute node): the cap ends loops, and a capped answer counts as wrong.
+- `slurm/summary.py results/a100 results/a100/search` prints both tables from the raw files. Raw answers:
+  `results/a100/`; refusal tests keep verdicts only.
+- Weights, datasets and Python wheels were fetched on the login node; the compute nodes have no internet. The venv needs
+  a Python with its headers (uv's managed Python): Triton compiles a C module at start and the system Python 3.12 has
+  no `Python.h`.
+- 4 Slurm jobs, 2.2 node-hours: `sbatch -A <account> -p <gpu partition>` with `QWEN_WORK` set to the folder holding
+  `models/`, `data/`, `hf/`, `.venv/` and this repo as `repo/`.
 
 ## What was tried (dev set, thinking off)
 
@@ -100,9 +176,10 @@ than damage from abliteration or quantization.
 
 - The refusal check is 6 prompts (`refuse.py`) scored by refusal phrases in the first 400 characters. "0/6" means
   these 6 were answered, not that the model never refuses. Only verdicts were kept, never the answers.
-- The abliterated model was not run with thinking off on the full battery, so the table has no "abliterated, thinking
-  off" row; its comparison is the thinking-on run above.
-- One seed, one machine; differences of 1 or 2 questions out of 74 are noise.
+- On the PC the abliterated model was not run with thinking off; its thinking-off scores are the BF16 ones in
+  [Full precision on A100s](#full-precision-on-a100s-bf16).
+- The PC runs are one seed on one machine; differences of 1 or 2 questions out of 74 are noise there, and the A100
+  reruns show up to 5 for the same seed.
 
 ## How
 
